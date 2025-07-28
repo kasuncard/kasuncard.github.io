@@ -1,0 +1,207 @@
+    @font-face {
+      font-family: 'ComicCAT';
+      src: url('Comic_CAT.otf') format('opentype');
+    }
+
+    :root {
+      --mint: #00A367;
+      --mint-dark: #000;
+      --white: #fffdf9;
+      --bubble-shadow: rgba(0, 0, 0, 0.25);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'ComicCAT', sans-serif;
+      background-color: var(--white);
+      color: #111;
+    }
+
+    header {
+      background-color: var(--mint);
+      padding: 2rem 1rem;
+      text-align: center;
+      border-bottom: 3px solid #333;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.8rem;
+      color: var(--white);
+    }
+
+    header p {
+      margin-top: 0.5rem;
+      font-size: 1.2rem;
+      color: #eae5dc;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 1rem;
+    }
+
+    .panel-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1%;
+      margin-bottom: 1rem;
+    }
+
+    .panel-row .panel-left-45 { width: 45%; }
+    .panel-row .panel-right-55 { width: 55%; }
+
+    .panel-row .panel-left-53 { width: 53%; }
+    .panel-row .panel-right-47 { width: 47%; }
+
+    .panel-row .panel-left-50 { width: 50%; }
+    .panel-row .panel-right-50 { width: 50%; }
+
+    .comic-panel {
+      background: var(--mint);
+      border: 3px solid var(--mint-dark);
+      border-radius: 2px;
+      color: #111;
+      text-decoration: none;
+      position: relative;
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+
+    .comic-panel .inner {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      height: 100%;
+      padding: 1rem;
+    }
+
+    .comic-panel.left .inner {
+      flex-direction: row;
+    }
+
+    .comic-panel.right .inner {
+      flex-direction: row-reverse;
+    }
+
+    .comic-panel img {
+      width: 40%;
+      height: auto;
+      flex-shrink: 0;
+  align-self: flex-end;
+    }
+.speech-bubble {
+  display: flex;
+  justify-content: center;  /* горизонтальное центрирование */
+  align-items: center;      /* вертикальное центрирование */
+  text-align: center;       /* если многострочный текст — центр по строкам */
+  background: var(--white);
+  padding: 0.8rem 1.2rem;
+  border: 3px solid var(--mint-dark);
+  border-radius: 30% 70% 40% 60% / 50% 40% 60% 50%;
+  font-size: 1.1rem;
+  line-height: 1.3;
+  max-width: 60%;
+  position: relative;
+  transition: none;
+}
+
+
+.comic-panel.left .speech-bubble {
+  margin-left: 1rem;
+}
+
+.comic-panel.left .speech-bubble::after {
+  left: -20px;
+  border-width: 15px 20px 15px 0;
+  border-color: transparent var(--white) transparent transparent;
+
+}
+
+.comic-panel.right .speech-bubble {
+  margin-right: 1rem;
+}
+
+.comic-panel.right .speech-bubble::after {
+  right: -20px;
+  border-width: 15px 0 15px 20px;
+  border-color: transparent transparent transparent var(--white);
+
+}
+
+
+
+    @media (max-width: 768px) {
+      .panel-row {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .panel-row .comic-panel {
+        width: 100% !important;
+      }
+
+      .comic-panel {
+        height: auto;
+      }
+
+      .comic-panel .inner {
+        flex-direction: column !important;
+        align-items: center;
+        padding: 1rem;
+      }
+
+      .speech-bubble {
+        max-width: 100%;
+        margin: 1rem 0 !important;
+      }
+
+      .speech-bubble::after {
+        display: none;
+      }
+
+      .comic-panel img {
+        width: 70%;
+        margin-top: 1rem;
+  align-self: flex-end;
+
+      }
+    }
+	/* Стили для блока с цитатой */
+.quote-container {
+  text-align: center;
+  margin: 2rem auto;
+  max-width: 600px;
+}
+
+.quote-box {
+  background-color: #f9f9f9;
+  border: 2px dashed #333;
+  border-radius: 10px;
+  padding: 1.5rem;
+  font-family: 'ComicCAT', sans-serif;
+}
+
+.quote-box p {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.quote-box button {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'ComicCAT', sans-serif;
+  transition: background-color 0.3s;
+}
+
+.quote-box button:hover {
+  background-color: #ff5252;
+}

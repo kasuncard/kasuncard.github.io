@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Мультивселенский журнал</title>
+</head>
+<body>
+  <header>
+    <h1>Мультивселенский журнал</h1>
+    <p>Комикс-дневник твоей альтернативной реальности</p>
+  </header>
+
+  <!-- Блок со случайной цитатой -->
+  <div class="quote-container">
+    <div class="quote-box">
+      <p id="random-quote">Загрузка цитаты...</p>
+      <button onclick="generateRandomQuote()">Новая цитата</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Ряд 1 -->
+    <div class="panel-row">
+      <div class="comic-panel left panel-left-45">
+        <div class="inner" style="align-items: flex-end;">
+          <img src="random_day.png" alt="Случайный день" />
+          <div class="speech-bubble" style="margin-top: auto;">Случайный день: вопросы, абсурд и неожиданные приключения!</div>
+        </div>
+      </div>
+      <div class="comic-panel right panel-right-55">
+        <div class="inner" style="align-items: flex-start;">
+          <img src="japan_corner.png" alt="Японский уголок" />
+          <div class="speech-bubble" style="margin-top: 2rem;">Японский уголок: бэнто, неон и эстетика 90-х!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Остальные ряды (как в вашем коде) -->
+    <!-- ... -->
+  </div>
+
+  <script>
+    // Массив цитат
+    const quotes = [
+      "«Мы — это то, что мы делаем постоянно. Совершенство — это не действие, а привычка.» — Аристотель",
+      "«Единственный способ сделать великую работу — любить то, что ты делаешь.» — Стив Джобс",
+      "«Всё, что ты можешь вообразить — реально.» — Пабло Пикассо",
+      "«Не бойся совершенства. Тебе его не достичь.» — Сальвадор Дали",
+      "«Если ты не готов измениться, ты не готов жить.» — Брюс Ли",
+      "«Космос внутри нас, мы сделаны из звёздного вещества.» — Карл Саган"
+    ];
+
+    // Функция для генерации случайной цитаты
+    function generateRandomQuote() {
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      document.getElementById("random-quote").textContent = quotes[randomIndex];
+    }
+
+    // Показываем цитату сразу при загрузке страницы
+    window.onload = generateRandomQuote;
+  </script>
+</body>
+</html>
