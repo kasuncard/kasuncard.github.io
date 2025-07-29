@@ -7,7 +7,6 @@
       --mint: #00A367;
       --mint-dark: #000;
       --white: #fffdf9;
-      --bubble-shadow: rgba(0, 0, 0, 0.25);
     }
 
     body {
@@ -205,3 +204,475 @@
 .quote-box button:hover {
   background-color: #ff5252;
 }
+.dice-3d {
+  width: 80px;
+  height: 80px;
+  perspective: 400px;
+  margin-bottom: 1rem;
+}
+
+.dice-inner {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: spin 2s infinite linear;
+  position: relative;
+}
+
+.dice-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: var(--secondary);
+  border: 2px solid var(--dark);
+  border-radius: 10px;
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes spin {
+  from { transform: rotateX(0deg) rotateY(0deg); }
+  to { transform: rotateX(360deg) rotateY(360deg); }
+}
+
+/* d6 cube */
+.d6 .dice-face:nth-child(1) { transform: rotateY(0deg) translateZ(40px); }
+.d6 .dice-face:nth-child(2) { transform: rotateY(180deg) translateZ(40px); }
+.d6 .dice-face:nth-child(3) { transform: rotateY(90deg) translateZ(40px); }
+.d6 .dice-face:nth-child(4) { transform: rotateY(-90deg) translateZ(40px); }
+.d6 .dice-face:nth-child(5) { transform: rotateX(90deg) translateZ(40px); }
+.d6 .dice-face:nth-child(6) { transform: rotateX(-90deg) translateZ(40px); }
+
+/* d4 (simplified as tetrahedron illusion) */
+.d4 .dice-face {
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  background: var(--light);
+}
+
+/* d10 (simplified) */
+.d10 .dice-face {
+  clip-path: polygon(50% 0%, 95% 35%, 80% 100%, 20% 100%, 5% 35%);
+  background: var(--light);
+}
+
+/* Контейнер с тремя кубиками в ряд */
+.dice-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1%;
+  margin-bottom: 1rem;
+}
+
+/* Общие стили для панелей кубиков */
+.dice-panel {
+  flex: 1 1 0;
+  background: var(--mint);
+  border: 3px solid var(--mint-dark);
+  border-radius: 2px;
+  color: #111;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  min-height: 220px;
+  user-select: none;
+}
+
+/* Отступы между панелями (опционально, если нужен) */
+.dice-panel:not(:last-child) {
+  margin-right: 1%;
+}
+
+/* Кубик — квадрат с цифрой */
+.dice {
+  width: 100px;
+  height: 100px;
+  background-color: var(--secondary);
+  border: 3px solid var(--dark);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: var(--dark);
+}
+
+/* Кнопка броска */
+button {
+  background-color: var(--mint-dark);
+  color: var(--white);
+  border: 2px solid var(--mint-dark);
+  border-radius: 50px;
+  padding: 0.8rem 1.5rem;
+  font-family: 'ComicCAT', sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+button:hover:not(:disabled) {
+  transform: translate(2px, 2px);
+}
+
+button:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+}
+
+/* Нижняя панель с предсказанием */
+.prediction-panel {
+  background: var(--mint);
+  border: 3px solid var(--mint-dark);
+  border-radius: 5px;
+  padding: 2rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: text;
+}
+
+/* Большой речевой пузырь с текстом */
+.prediction-panel .speech-bubble {
+  background: var(--white);
+  border: 3px solid var(--mint-dark);
+  border-radius: 30% 70% 40% 60% / 50% 40% 60% 50%;
+  padding: 1rem 2rem;
+  font-size: 1.4rem;
+  line-height: 1.4;
+  max-width: 100%;
+  text-align: center;
+  position: relative;
+}
+
+
+/* Адаптив — кубики и панель вниз на узких экранах */
+@media (max-width: 768px) {
+  .dice-row {
+    flex-direction: column;
+  }
+
+  .dice-panel {
+    margin-right: 0 !important;
+    margin-bottom: 1rem;
+    min-height: auto;
+  }
+
+  .prediction-panel {
+    padding: 1.5rem 1rem;
+  }
+
+}
+
+    :root {
+      --containerWidth: 200px;
+      --containerHeight: var(--containerWidth);
+      --faceWidth: calc(var(--containerWidth) * 0.5);
+      --faceHeight: calc(var(--faceWidth) * 0.86);
+      --transitionDuration: 0.5s;
+      --animationDuration: 3s;
+      --angle: 53deg;
+      --ringAngle: -11deg;
+      --sideAngle: calc(360deg / 5);
+      --opacity: 0.90;
+      --rotateX: calc(-1 * var(--angle));
+      --translateZ: calc(var(--faceWidth) * 0.335);
+      --translateY: calc(var(--faceHeight) * -0.15);
+      --translateRingZ: calc(var(--faceWidth) * 0.75);
+      --translateRingY: calc(var(--faceHeight) * 0.78 + var(--translateY));
+      --translateLowerZ: var(--translateZ);
+      --translateLowerY: calc(var(--faceHeight) * 0.78 + var(--translateRingY));
+    }
+
+    @keyframes roll {
+      10% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+      30% { transform: rotateX(120deg) rotateY(240deg) rotateZ(0deg) translateX(40px) translateY(40px); }
+      50% { transform: rotateX(240deg) rotateY(480deg) rotateZ(0deg) translateX(-40px) translateY(-40px); }
+      70% { transform: rotateX(360deg) rotateY(720deg) rotateZ(0deg); }
+      90% { transform: rotateX(480deg) rotateY(960deg) rotateZ(0deg); }
+    }
+
+    .content {
+      margin: auto;
+      position: relative;
+      width: var(--containerWidth);
+      height: var(--containerHeight);
+      perspective: 1500px;
+    }
+
+    .d20 {
+	--color: rgba(47, 82, 143, var(--opacity));
+
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform var(--transitionDuration) ease-out;
+      cursor: pointer;
+      transform: rotateX(var(--rotateX));
+    }
+
+    .d20.rolling {
+      animation: roll var(--animationDuration) linear;
+    }
+
+    .d20[data-face="1"] { transform: rotateX(calc(-1 * var(--angle))) rotateY(calc(var(--sideAngle) * 0)); }
+    .d20[data-face="2"] { transform: rotateX(calc(-1 * var(--angle))) rotateY(calc(var(--sideAngle) * 1)); }
+    .d20[data-face="3"] { transform: rotateX(calc(-1 * var(--angle))) rotateY(calc(var(--sideAngle) * 2)); }
+    .d20[data-face="4"] { transform: rotateX(calc(-1 * var(--angle))) rotateY(calc(var(--sideAngle) * 3)); }
+    .d20[data-face="5"] { transform: rotateX(calc(-1 * var(--angle))) rotateY(calc(var(--sideAngle) * 4)); }
+    
+    .d20[data-face="16"] { transform: rotateX(calc(-1 * var(--angle) + 180deg)) rotateY(calc(-1 * var(--sideAngle) * 1)); }
+    .d20[data-face="17"] { transform: rotateX(calc(-1 * var(--angle) + 180deg)) rotateY(calc(-1 * var(--sideAngle) * 2)); }
+    .d20[data-face="18"] { transform: rotateX(calc(-1 * var(--angle) + 180deg)) rotateY(calc(-1 * var(--sideAngle) * 3)); }
+    .d20[data-face="19"] { transform: rotateX(calc(-1 * var(--angle) + 180deg)) rotateY(calc(-1 * var(--sideAngle) * 4)); }
+    .d20[data-face="20"] { transform: rotateX(calc(-1 * var(--angle) + 180deg)) rotateY(calc(-1 * var(--sideAngle) * 5)); }
+    
+    .d20[data-face="6"] { transform: rotateX(calc(-1 * var(--ringAngle))) rotateZ(180deg) rotateY(calc(var(--sideAngle) * 0)); }
+    .d20[data-face="7"] { transform: rotateX(calc(-1 * var(--ringAngle))) rotateZ(180deg) rotateY(calc(var(--sideAngle) * 1)); }
+    .d20[data-face="8"] { transform: rotateX(calc(-1 * var(--ringAngle))) rotateZ(180deg) rotateY(calc(var(--sideAngle) * 2)); }
+    .d20[data-face="9"] { transform: rotateX(calc(-1 * var(--ringAngle))) rotateZ(180deg) rotateY(calc(var(--sideAngle) * 3)); }
+    .d20[data-face="10"] { transform: rotateX(calc(-1 * var(--ringAngle))) rotateZ(180deg) rotateY(calc(var(--sideAngle) * 4)); }
+    
+    .d20[data-face="11"] { transform: rotateX(calc(-1 * var(--ringAngle))) rotateY(calc(-1 * var(--sideAngle) * 3 - var(--sideAngle)/2)); }
+    .d20[data-face="12"] { transform: rotateX(calc(-1 * var(--ringAngle))) rotateY(calc(-1 * var(--sideAngle) * 4 - var(--sideAngle)/2)); }
+    .d20[data-face="13"] { transform: rotateX(calc(-1 * var(--ringAngle))) rotateY(calc(-1 * var(--sideAngle) * 5 - var(--sideAngle)/2)); }
+    .d20[data-face="14"] { transform: rotateX(calc(-1 * var(--ringAngle))) rotateY(calc(-1 * var(--sideAngle) * 6 - var(--sideAngle)/2)); }
+    .d20[data-face="15"] { transform: rotateX(calc(-1 * var(--ringAngle))) rotateY(calc(-1 * var(--sideAngle) * 7 - var(--sideAngle)/2)); }
+
+ .d20   .face {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      margin: 0 calc(-1 * var(--faceWidth) * 0.5);
+      border-left: calc(var(--faceWidth) * 0.5) solid transparent;
+      border-right: calc(var(--faceWidth) * 0.5) solid transparent;
+      border-bottom: var(--faceHeight) solid var(--color);
+      width: 0;
+      height: 0;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+      counter-increment: steps 1;
+	    display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: calc(var(--faceWidth) * 0.5) solid transparent;
+  border-right: calc(var(--faceWidth) * 0.5) solid transparent;
+  border-bottom: var(--faceHeight) solid var(--color);
+    }
+
+.d20 .face::before {
+  position: relative;
+  top: 55px; /* Точная подстройка положения */
+  color: #fff;
+  text-shadow: 1px 1px 3px #000;
+  font-size: calc(var(--faceHeight) * 0.3);
+  transform: translateZ(2px); /* Вывод вперед */
+  pointer-events: none; /* Чтобы не мешали кликам */
+}
+.d20 .face-1::before { content: "1"; }
+.d20 .face-2::before { content: "2"; }
+.d20 .face-3::before { content: "3"; }
+.d20 .face-4::before { content: "4"; }
+.d20 .face-5::before { content: "5"; }
+.d20 .face-6::before { content: "6"; }
+.d20 .face-7::before { content: "7"; }
+.d20 .face-8::before { content: "8"; }
+.d20 .face-9::before { content: "9"; }
+.d20 .face-10::before { content: "10"; }
+.d20 .face-11::before { content: "11"; }
+.d20 .face-12::before { content: "12"; }
+.d20 .face-13::before { content: "13"; }
+.d20 .face-14::before { content: "14"; }
+.d20 .face-15::before { content: "15"; }
+.d20 .face-16::before { content: "16"; }
+.d20 .face-17::before { content: "17"; }
+.d20 .face-18::before { content: "18"; }
+.d20 .face-19::before { content: "19"; }
+.d20 .face-20::before { content: "20"; }
+    /* Face positions */
+    .d20 .face:nth-child(1) { transform: rotateY(calc(-1 * var(--sideAngle) * 0)) translateZ(var(--translateZ)) translateY(var(--translateY)) rotateX(var(--angle)); }
+    .d20 .face:nth-child(2) { transform: rotateY(calc(-1 * var(--sideAngle) * 1)) translateZ(var(--translateZ)) translateY(var(--translateY)) rotateX(var(--angle)); }
+    .d20 .face:nth-child(3) { transform: rotateY(calc(-1 * var(--sideAngle) * 2)) translateZ(var(--translateZ)) translateY(var(--translateY)) rotateX(var(--angle)); }
+    .d20 .face:nth-child(4) { transform: rotateY(calc(-1 * var(--sideAngle) * 3)) translateZ(var(--translateZ)) translateY(var(--translateY)) rotateX(var(--angle)); }
+    .d20 .face:nth-child(5) { transform: rotateY(calc(-1 * var(--sideAngle) * 4)) translateZ(var(--translateZ)) translateY(var(--translateY)) rotateX(var(--angle)); }
+    
+    .d20 .face:nth-child(16) { transform: rotateY(calc(var(--sideAngle) * -2 + var(--sideAngle)/2)) translateZ(var(--translateLowerZ)) translateY(var(--translateLowerY)) rotateZ(180deg) rotateX(var(--angle)); }
+    .d20 .face:nth-child(17) { transform: rotateY(calc(var(--sideAngle) * -1 + var(--sideAngle)/2)) translateZ(var(--translateLowerZ)) translateY(var(--translateLowerY)) rotateZ(180deg) rotateX(var(--angle)); }
+    .d20 .face:nth-child(18) { transform: rotateY(calc(var(--sideAngle) * 0 + var(--sideAngle)/2)) translateZ(var(--translateLowerZ)) translateY(var(--translateLowerY)) rotateZ(180deg) rotateX(var(--angle)); }
+    .d20 .face:nth-child(19) { transform: rotateY(calc(var(--sideAngle) * 1 + var(--sideAngle)/2)) translateZ(var(--translateLowerZ)) translateY(var(--translateLowerY)) rotateZ(180deg) rotateX(var(--angle)); }
+    .d20 .face:nth-child(20) { transform: rotateY(calc(var(--sideAngle) * 2 + var(--sideAngle)/2)) translateZ(var(--translateLowerZ)) translateY(var(--translateLowerY)) rotateZ(180deg) rotateX(var(--angle)); }
+    
+    .d20 .face:nth-child(6) { transform: rotateY(calc(-1 * var(--sideAngle) * 5)) translateZ(var(--translateRingZ)) translateY(var(--translateRingY)) rotateZ(180deg) rotateX(var(--ringAngle)); }
+    .d20 .face:nth-child(7) { transform: rotateY(calc(-1 * var(--sideAngle) * 6)) translateZ(var(--translateRingZ)) translateY(var(--translateRingY)) rotateZ(180deg) rotateX(var(--ringAngle)); }
+    .d20 .face:nth-child(8) { transform: rotateY(calc(-1 * var(--sideAngle) * 7)) translateZ(var(--translateRingZ)) translateY(var(--translateRingY)) rotateZ(180deg) rotateX(var(--ringAngle)); }
+    .d20 .face:nth-child(9) { transform: rotateY(calc(-1 * var(--sideAngle) * 8)) translateZ(var(--translateRingZ)) translateY(var(--translateRingY)) rotateZ(180deg) rotateX(var(--ringAngle)); }
+    .d20 .face:nth-child(10) { transform: rotateY(calc(-1 * var(--sideAngle) * 9)) translateZ(var(--translateRingZ)) translateY(var(--translateRingY)) rotateZ(180deg) rotateX(var(--ringAngle)); }
+    
+    .d20 .face:nth-child(11) { transform: rotateY(calc(var(--sideAngle) * 3 + var(--sideAngle)/2)) translateZ(var(--translateRingZ)) translateY(var(--translateRingY)) rotateX(var(--ringAngle)); }
+    .d20 .face:nth-child(12) { transform: rotateY(calc(var(--sideAngle) * 4 + var(--sideAngle)/2)) translateZ(var(--translateRingZ)) translateY(var(--translateRingY)) rotateX(var(--ringAngle)); }
+    .d20 .face:nth-child(13) { transform: rotateY(calc(var(--sideAngle) * 5 + var(--sideAngle)/2)) translateZ(var(--translateRingZ)) translateY(var(--translateRingY)) rotateX(var(--ringAngle)); }
+    .d20 .face:nth-child(14) { transform: rotateY(calc(var(--sideAngle) * 6 + var(--sideAngle)/2)) translateZ(var(--translateRingZ)) translateY(var(--translateRingY)) rotateX(var(--ringAngle)); }
+    .d20 .face:nth-child(15) { transform: rotateY(calc(var(--sideAngle) * 7 + var(--sideAngle)/2)) translateZ(var(--translateRingZ)) translateY(var(--translateRingY)) rotateX(var(--ringAngle)); }
+
+    h2 {
+      color: #fafafa;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    ul > li {
+      display: inline-block;
+      margin: 10px;
+    }
+	
+    :root {
+      --containerWidth: 200px;
+      --containerHeight: var(--containerWidth);
+      --faceSize: calc(var(--containerWidth) * 0.6);
+      --transitionDuration: 0.5s;
+      --animationDuration: 3s;
+      --opacity: 0.90;
+      --color: rgba(109, 18, 106, var(--opacity));
+    }
+
+
+    .content {
+      margin: auto;
+position: relative;
+      width: var(--containerWidth);
+      height: var(--containerHeight);
+      perspective: 1500px;
+    }
+
+
+    .d6 {
+      position: relative;;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform var(--transitionDuration) ease-out;
+      cursor: pointer;
+      transform: rotateX(var(--rotateX));
+    }
+
+    .d6.rolling {
+      animation: roll var(--animationDuration) linear;
+    }
+
+    .d6[data-face="1"] { transform: rotateX(0deg) rotateY(0deg); }
+    .d6[data-face="2"] { transform: rotateY(-90deg); }
+    .d6[data-face="3"] { transform: rotateX(90deg); }
+    .d6[data-face="4"] { transform: rotateX(-90deg); }
+    .d6[data-face="5"] { transform: rotateY(90deg); }
+    .d6[data-face="6"] { transform: rotateY(180deg); }
+
+    .d6 .face {
+      position: absolute;
+      width: var(--faceSize);
+      height: var(--faceSize);
+	  left: 0;
+      top: 0%;
+      background: var(--color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: calc(var(--faceSize) * 0.4);
+      color: white;
+      text-shadow: 1px 1px 3px #000;
+      transform-style: preserve-3d;
+    }
+
+.d6 .face-1::before { content: "1"; }
+.d6 .face-2::before { content: "2"; }
+.d6 .face-3::before { content: "3"; }
+.d6 .face-4::before { content: "4"; }
+.d6 .face-5::before { content: "5"; }
+.d6 .face-6::before { content: "6"; }
+
+
+    .d6 .face:nth-child(1) { transform: translateZ(calc(var(--faceSize) / 2)); }
+    .d6 .face:nth-child(2) { transform: rotateY(90deg) translateZ(calc(var(--faceSize) / 2)); }
+    .d6 .face:nth-child(3) { transform: rotateX(90deg) translateZ(calc(var(--faceSize) / 2)); }
+    .d6 .face:nth-child(4) { transform: rotateX(-90deg) translateZ(calc(var(--faceSize) / 2)); }
+    .d6 .face:nth-child(5) { transform: rotateY(-90deg) translateZ(calc(var(--faceSize) / 2)); }
+    .d6 .face:nth-child(6) { transform: rotateY(180deg) translateZ(calc(var(--faceSize) / 2)); }
+
+        
+.coin {
+  width: 150px;
+  height: 150px;
+  position: relative;
+  margin: 0 auto;
+  transform-style: preserve-3d;
+  transform: rotateX(0deg) rotateY(0deg);
+  transition: transform 1s;
+}
+
+.coin-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.coin-face img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Стороны */
+.heads {
+  transform: rotateY(0deg) translateZ(10px);
+  z-index: 2;
+}
+
+.tails {
+  transform: rotateY(180deg) translateZ(10px);
+}
+
+/* Анимация броска */
+.flip {
+  animation: flip-coin 2.5s ease-out forwards;
+}
+
+@keyframes flip-coin {
+  0%   { transform: rotateX(0deg) rotateY(0deg); }
+  20%  { transform: rotateX(180deg) rotateY(90deg); }
+  40%  { transform: rotateX(360deg) rotateY(180deg); }
+  60%  { transform: rotateX(540deg) rotateY(270deg); }
+  80%  { transform: rotateX(720deg) rotateY(360deg); }
+  100% { transform: rotateX(900deg) rotateY(450deg); }
+}
+
+
+    .return-button {
+      display: inline-block;
+      padding: 0.7rem 1.2rem;
+      font-size: 1rem;
+      background-color: var(--mint-dark);
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 30px;
+      border: 2px solid var(--mint-dark);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .return-button:hover {
+      background-color: transparent;
+      color: var(--mint-dark);
+    }

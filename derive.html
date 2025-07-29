@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  
+  <title>Психогеографический дрейф | Мультивселенский журнал</title>
+  <style>
+      @font-face {
+      font-family: 'ComicCAT';
+      src: url('Comic_CAT.otf') format('opentype');
+    }
+      .return-button {
+      display: inline-block;
+      padding: 0.7rem 1.2rem;
+      font-size: 1rem;
+      background-color: var(--mint-dark);
+      color: var(--white);
+      text-decoration: none;
+      border-radius: 30px;
+      border: 2px solid var(--mint-dark);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .return-button:hover {
+      background-color: transparent;
+      color: var(--mint-dark);
+    }
+
+    :root {
+      --primary: #FF5E5B;
+      --secondary: #00CECB;
+      --dark: #2D3047;
+      --light: #FFED66;
+      --bg: #F7F7FF;
+	        --mint: #00A367;
+      --mint-dark: #000;
+      --white: #fffdf9;
+
+    }
+    
+    body {
+      font-family: 'ComicCAT', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--white);
+      color: #111;
+    }
+    
+    header {
+      background-color: var(--primary);
+      font-size: 1.4rem;
+      color: var(--white);
+      padding: 1rem;
+      text-align: center;
+      border-bottom: 5px solid var(--dark);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    
+    .panel-row {
+      display: flex;
+      margin-bottom: 1rem;
+      gap: 1rem;
+    }
+    
+    .comic-panel {
+      position: relative;
+      border: 3px solid var(--dark);
+      overflow: hidden;
+      background-color: white;
+	    font-size: 1.1rem;
+
+    }
+    
+    .panel-left-60 { width: 60%; }
+    .panel-right-40 { width: 40%; }
+    
+    .inner {
+      padding: 1rem;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .speech-bubble {
+      background-color: var(--light);
+      padding: 1rem;
+      position: relative;
+      border: 2px solid var(--dark);
+      margin: 1rem 0;
+	    font-size: 1.1rem;
+
+    }
+    
+    
+    button {
+      background-color: var(--secondary);
+      border: 2px solid var(--dark);
+      border-radius: 50px;
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+  font-size: 1.1rem;
+      cursor: pointer;
+      margin: 0.5rem 0;
+    }
+    
+    button:hover {
+      transform: translate(2px, 2px);
+    }
+    
+    #timer {
+      font-size: 2rem;
+      font-weight: bold;
+      text-align: center;
+      margin: 1rem 0;
+      color: var(--primary);
+    }
+    
+    #history {
+      max-height: 300px;
+      overflow-y: auto;
+      border: 2px dashed var(--dark);
+      padding: 0.5rem;
+      background-color: rgba(255, 237, 102, 0.3);
+    }
+    
+    .history-item {
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--dark);
+    }
+    
+    @media (max-width: 768px) {
+      .panel-row {
+        flex-direction: column;
+      }
+      .panel-left-60, .panel-right-40 {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Психогеографический дрейф</h1>
+    <p>Случайные инструкции для городских странствий</p>
+  </header>
+  
+  <div class="container">
+    <!-- Основной ряд -->
+    <div class="panel-row">
+      <div class="comic-panel panel-left-60">
+        <div class="inner">
+          <div class="speech-bubble" id="current-instruction">
+            Нажмите кнопку, чтобы получить первую инструкцию для вашего дрейфа!
+          </div>
+          
+          <div id="timer">--:--</div>
+          
+          <button id="new-instruction-btn">Новая инструкция</button>
+          <button id="start-timer-btn">Старт таймера</button>
+          <button id="reset-btn">Сбросить всё</button>
+        </div>
+      </div>
+      
+      <div class="comic-panel panel-right-40">
+        <div class="inner">
+          <div class="speech-bubble">История вашего дрейфа:</div>
+          <div id="history"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Второй ряд с пояснениями -->
+    <div class="panel-row">
+      <div class="comic-panel" style="width:100%">
+        <div class="inner">
+          <div class="speech-bubble">
+		    <h3>Что это?</h3>
+            <p>Твой способ проникнуть на изнанку города. Позволь случаю определять твой маршрут.</p>
+            <h3>Что делать?</h3>
+            <p>1. Получай случайные инструкции для исследования города</p>
+            <p>2. Таймер поможет соблюдать временные рамки</p>
+            <p>3. Фиксируй находки и просто наслаждайся обыденной метафизикой</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- Кнопка возврата -->
+    <div style="text-align: center;">
+      <a href="index.html" class="return-button">← Вернуться на главную</a>
+    </div>
+
+  <script>
+    // База инструкций
+    const instructions = [
+      "Идите 10 минут прямо, затем сверните в первый переулок, который привлечёт ваше внимание.",
+      "Двигайтесь против потока людей (если он есть).",
+      "Выберите направление, куда дует ветер.",
+      "Поверните налево на следующем перекрёстке.",
+      "Поверните направо после того, как услышите громкий звук.",
+      "Идите, пока не встретите красную дверь, затем смените направление.",
+      "Следуйте за тенью самого высокого объекта поблизости.",
+      "Двигайтесь вверх по склону (если он есть).",
+      "Спуститесь вниз по лестнице, если найдёте её.",
+      "Идите задом наперёд 20 шагов, затем выберите новое направление.",
+      "Найдите узор или граффити и следуйте вдоль него.",
+      "Идите, считая трещины на асфальте – сверните после 10-й.",
+      "Выберите путь, ориентируясь на запахи (идите к самому сильному).",
+      "Следуйте за первой птицей, которую увидите.",
+      "Найдите зеркало или отражающую поверхность и идите в том направлении, куда оно 'смотрит'."
+    ];
+    
+    // Элементы DOM
+    const instructionElement = document.getElementById('current-instruction');
+    const timerElement = document.getElementById('timer');
+    const historyElement = document.getElementById('history');
+    const newInstructionBtn = document.getElementById('new-instruction-btn');
+    const startTimerBtn = document.getElementById('start-timer-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    
+    // Переменные состояния
+    let currentInstruction = '';
+    let timerInterval = null;
+    let remainingTime = 0;
+    
+    // Загрузка истории из localStorage
+    function loadHistory() {
+      const savedHistory = localStorage.getItem('deriveHistory');
+      if (savedHistory) {
+        historyElement.innerHTML = savedHistory;
+      }
+    }
+    
+    // Сохранение истории в localStorage
+    function saveHistory() {
+      localStorage.setItem('deriveHistory', historyElement.innerHTML);
+    }
+    
+    // Добавление записи в историю
+    function addToHistory(instruction) {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString();
+      
+      const historyItem = document.createElement('div');
+      historyItem.className = 'history-item';
+      historyItem.innerHTML = `<strong>${timeString}</strong>: ${instruction}`;
+      
+      historyElement.prepend(historyItem);
+      saveHistory();
+    }
+    
+    // Получение случайной инструкции
+    function getRandomInstruction() {
+      const randomIndex = Math.floor(Math.random() * instructions.length);
+      return instructions[randomIndex];
+    }
+    
+    // Разбор времени из инструкции
+    function parseTimeFromInstruction(instruction) {
+      const timeMatch = instruction.match(/(\d+)\s+минут/);
+      return timeMatch ? parseInt(timeMatch[1]) * 60 : 0;
+    }
+    
+    // Обновление таймера
+    function updateTimer() {
+      if (remainingTime <= 0) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        timerElement.textContent = "00:00";
+        timerElement.style.color = "var(--primary)";
+        return;
+      }
+      
+      remainingTime--;
+      
+      const minutes = Math.floor(remainingTime / 60);
+      const seconds = remainingTime % 60;
+      
+      timerElement.textContent = 
+        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      
+      // Меняем цвет при малом времени
+      if (remainingTime <= 10) {
+        timerElement.style.color = "red";
+      }
+    }
+    
+    // Запуск таймера
+    function startTimer(duration) {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+      }
+      
+      remainingTime = duration;
+      updateTimer();
+      
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+    
+    // Обработчики событий
+    newInstructionBtn.addEventListener('click', () => {
+      currentInstruction = getRandomInstruction();
+      instructionElement.textContent = currentInstruction;
+      
+      // Добавляем в историю
+      addToHistory(currentInstruction);
+      
+      // Парсим время для таймера
+      const timeInSeconds = parseTimeFromInstruction(currentInstruction);
+      if (timeInSeconds > 0) {
+        timerElement.textContent = 
+          `${Math.floor(timeInSeconds/60).toString().padStart(2, '0')}:00`;
+        timerElement.style.color = "var(--primary)";
+      } else {
+        timerElement.textContent = "--:--";
+      }
+    });
+    
+    startTimerBtn.addEventListener('click', () => {
+      if (!currentInstruction) {
+        alert('Сначала получите инструкцию!');
+        return;
+      }
+      
+      const timeInSeconds = parseTimeFromInstruction(currentInstruction);
+      if (timeInSeconds > 0) {
+        startTimer(timeInSeconds);
+      } else {
+        alert('Эта инструкция не содержит временного ограничения');
+      }
+    });
+    
+    resetBtn.addEventListener('click', () => {
+      if (confirm('Очистить всю историю дрейфа?')) {
+        historyElement.innerHTML = '';
+        localStorage.removeItem('deriveHistory');
+        currentInstruction = '';
+        instructionElement.textContent = 'Нажмите кнопку, чтобы получить первую инструкцию для вашего дрейфа!';
+        
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+        }
+        timerElement.textContent = "--:--";
+        timerElement.style.color = "var(--primary)";
+      }
+    });
+    
+    // Инициализация при загрузке
+    loadHistory();
+  </script>
+</body>
+</html>

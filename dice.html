@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Монетка решений в стиле Scott Pilgrim</title>
+  <style>
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>МОНЕТКА СУДЬБЫ</h1>
+    
+    <div class="coin-container">
+      <div class="coin" id="coin">
+        <div class="coin-face heads">
+          <img src="pics/quitar_coin.png" alt="Лицевая сторона">
+        </div>
+        <div class="coin-face tails">
+          <img src="pics/heart_coin.png" alt="Обратная сторона">
+        </div>
+      </div>
+    </div>
+    
+    <button class="flip-btn" id="flipButton">ПОДБРОСИТЬ</button>
+    
+    <div class="result-panel">
+      <p class="result-text" id="resultText">Нажми кнопку, чтобы узнать ответ!</p>
+    </div>
+  </div>
+
+  <script>
+    const coin = document.getElementById('coin');
+    const flipButton = document.getElementById('flipButton');
+    const resultText = document.getElementById('resultText');
+    let isFlipping = false;
+    
+    // Варианты ответов
+    const yesAnswers = [
+      "Да! Это знак!",
+      "Абсолютно ДА!",
+      "100% согласия",
+      "Не сомневайся - ДА!",
+      "Судьба говорит ДА"
+    ];
+    
+    const noAnswers = [
+      "Нет, и это окончательно",
+      "Лучше не стоит",
+      "Однозначно НЕТ",
+      "Судьба против",
+      "Не сейчас"
+    ];
+    
+    flipButton.addEventListener('click', () => {
+      if (isFlipping) return;
+      
+      isFlipping = true;
+      resultText.textContent = "Монетка решает...";
+      coin.classList.add('flip');
+      
+      setTimeout(() => {
+        const randomValue = Math.random() < 0.5 ? 'heads' : 'tails';
+        const answers = randomValue === 'heads' ? yesAnswers : noAnswers;
+        const randomAnswer = answers[Math.floor(Math.random() * answers.length)];
+        
+        // Удаляем анимацию и устанавливаем финальное положение
+        coin.classList.remove('flip');
+        coin.style.transform = `rotateY(${randomValue === 'heads' ? 0 : 180}deg)`;
+        resultText.textContent = randomAnswer;
+        
+        isFlipping = false;
+      }, 2500); // Должно совпадать с длительностью анимации
+    });
+  </script>
+</body>
+</html>
